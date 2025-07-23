@@ -143,7 +143,9 @@ export function AddContentModal({ isOpen, setIsOpen, postToEdit }: AddContentMod
                 </Button>
                 {platformSuggestion && (
                   <div className="p-3 rounded-md bg-muted/50 border">
-                    <p className="text-sm font-semibold">Suggested Platform: <Badge variant="secondary">{platformSuggestion.platform}</Badge></p>
+                    <div className="text-sm font-semibold">
+                      Suggested Platform: <Badge variant="secondary">{platformSuggestion.platform}</Badge>
+                    </div>
                     <p className="text-sm text-muted-foreground mt-1">{platformSuggestion.reasoning}</p>
                   </div>
                 )}
