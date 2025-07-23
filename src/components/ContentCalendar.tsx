@@ -18,6 +18,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 export function ContentCalendar() {
   const { posts, updatePostDate } = useAppContext();
@@ -95,18 +96,36 @@ export function ContentCalendar() {
                 <div className="font-bold text-sm text-right">{format(day, "d")}</div>
                 <div className="flex-1 space-y-1 overflow-y-auto">
                   {postsForDay.map((post) => (
-                    <div
-                      key={post.id}
-                      draggable
-                      onDragStart={(e) => handleDragStart(e, post.id)}
-                      className="bg-secondary/50 p-2 rounded-md text-xs cursor-grab active:cursor-grabbing flex items-start gap-1"
-                    >
-                      <GripVertical className="h-4 w-4 text-muted-foreground shrink-0 mt-0.5" />
-                      <div className="flex-1">
-                        {post.platform && <Badge variant="outline" className="mb-1">{post.platform}</Badge>}
-                        <p className="line-clamp-3">{post.content}</p>
-                      </div>
-                    </div>
+                    <Popover key={post.id}>
+                      <PopoverTrigger asChild>
+                        <div
+                          draggable
+                          onDragStart={(e) => handleDragStart(e, post.id)}
+                          className="bg-secondary/50 p-2 rounded-md text-xs cursor-grab active:cursor-grabbing flex items-start gap-1"
+                        >
+                          <GripVertical className="h-4 w-4 text-muted-foreground shrink-0 mt-0.5" />
+                          <div className="flex-1">
+                            {post.platform && <Badge variant="outline" className="mb-1">{post.platform}</Badge>}
+                            <p className="line-clamp-3">{post.content}</p>
+                          </div>
+                        </div>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-80 bg-card">
+                        <div className="grid gap-4">
+                          <div className="space-y-2">
+                            <h4 className="font-medium leading-none font-headline">
+                              {post.platform ? `${post.platform} Post` : "Content Post"}
+                            </h4>
+                            <p className="text-sm text-muted-foreground">
+                              Scheduled for {format(new Date(post.date), "MMMM d, yyyy")}
+                            </p>
+                          </div>
+                          <div className="text-sm">
+                            {post.content}
+                          </div>
+                        </div>
+                      </PopoverContent>
+                    </Popover>
                   ))}
                 </div>
               </div>
