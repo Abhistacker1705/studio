@@ -8,6 +8,7 @@ interface AppContextType {
   posts: Post[];
   setUserProfile: (profile: UserProfile) => void;
   addPost: (post: Omit<Post, 'id'> & { id?: string }) => void;
+  updatePost: (post: Post) => void;
   updatePostDate: (postId: string, newDate: string) => void;
 }
 
@@ -55,6 +56,14 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     setPosts(prevPosts => [...prevPosts, newPost]);
   };
 
+  const updatePost = (updatedPost: Post) => {
+    setPosts(prevPosts =>
+      prevPosts.map(post =>
+        post.id === updatedPost.id ? updatedPost : post
+      )
+    );
+  };
+
   const updatePostDate = (postId: string, newDate: string) => {
     setPosts(prevPosts =>
       prevPosts.map(post =>
@@ -73,7 +82,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <AppContext.Provider
-      value={{ userProfile, posts, setUserProfile: handleSetUserProfile, addPost, updatePostDate }}
+      value={{ userProfile, posts, setUserProfile: handleSetUserProfile, addPost, updatePost, updatePostDate }}
     >
       {children}
     </AppContext.Provider>
